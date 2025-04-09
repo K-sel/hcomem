@@ -1,0 +1,65 @@
+{
+  "name": "Comem",
+  "short_name": "Comem",
+  "description": "Application mobile pour les horaires d'Ingénierie des Médias HEIG-VD",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#2163f6",
+  "theme_color": "#2163f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/hcomem/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/hcomem/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/hcomem/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/hcomem/maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/hcomem/maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Horaires",
+      "short_name": "Horaires",
+      "description": "Consulter les horaires de cours",
+      "url": "/horaires"
+    },
+    {
+      "name": "Ressources",
+      "short_name": "Ressources",
+      "description": "Accéder aux ressources pédagogiques",
+      "url": "/ressources"
+    }
+  ],
+  "lang": "fr-CH",
+  "dir": "ltr",
+  "scope": "/",
+  "serviceworker": {
+    "src": "/service-worker.js",
+    "scope": "/"
+  },
+  "display_override": ["standalone", "window-controls-overlay"]
+}
