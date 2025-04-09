@@ -39,21 +39,24 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["education", "productivity"],
-  "shortcuts": [
+  "screenshots": [
     {
-      "name": "Horaires",
-      "short_name": "Horaires",
-      "description": "Consulter les horaires de cours",
-      "url": "/horaires"
+      "src": "/screenshots/desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Écran d'accueil de Comem sur ordinateur"
     },
     {
-      "name": "Ressources",
-      "short_name": "Ressources",
-      "description": "Accéder aux ressources pédagogiques",
-      "url": "/ressources"
+      "src": "/screenshots/mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Écran d'accueil de Comem sur mobile"
     }
   ],
+  "categories": ["education", "productivity"],
+
   "lang": "fr-CH",
   "dir": "ltr",
   "scope": "/",
