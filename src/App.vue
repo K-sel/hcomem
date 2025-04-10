@@ -3,33 +3,45 @@ import TheSchedule from "./components/TheSchedule.vue";
 import TheWelcome from "./components/TheWelcome.vue";
 import Options from "./components/Options.vue";
 import CalendarCarousel from "./components/CalendarCarousel.vue";
-import TheHeader from "./components/TheHeader.vue";
 import TheTitle from "./components/TheTitle.vue";
 import BadgeCarousel from "./components/BadgeCarousel.vue";
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { useJsonStorage } from "./composables/useJsonStorage";
+import { loadSchedule } from "./data/api.js";
 
 const showHistory = ref(false);
 const todayClicked = ref(false);
 const DateSelected = ref(null);
 const ClassSelected = ref("all");
 
+// Récupération du schedule depuis le stockage local
+const { data: schedule } = useJsonStorage("schedule", []);
+
+onMounted(async () => {
+  try {
+    // Chargement des données fraîches depuis l'API
+    const freshSchedule = await loadSchedule();
+    // Mise à jour de la référence pour déclencher la sauvegarde (via le watcher dans useJsonStorage)
+    schedule.value = freshSchedule;
+    console.log(schedule.value);
+  } catch (error) {
+    console.error("Erreur lors du chargement des données :", error);
+  }
+});
+
 const handleClickOnAujourdhuiButton = () => {
-  console.log("Button Aujourd'hui clicked!");
   todayClicked.value = !todayClicked.value;
 };
 
 const handleToggleClick = (state) => {
-  console.log("Toggle a " + state);
   showHistory.value = state;
 };
 
 const handleDateChange = (date) => {
-  console.log("Date selected: " + date);
   DateSelected.value = date;
 };
 
 const handleClassChange = (className) => {
-  console.log("Class selected: " + className);
   ClassSelected.value = className;
 };
 </script>
@@ -49,11 +61,16 @@ const handleClassChange = (className) => {
         @dateSelected="handleDateChange"
         :showHistory="showHistory"
         :todayClicked="todayClicked"
+        :schedule="schedule"
       ></CalendarCarousel>
-      <BadgeCarousel @classSelected="handleClassChange"></BadgeCarousel>
+      <BadgeCarousel
+        @classSelected="handleClassChange"
+        :schedule="schedule"
+      ></BadgeCarousel>
       <TheSchedule
         :DateSelected="DateSelected"
         :ClassSelected="ClassSelected"
+        :schedule="schedule"
       />
     </main>
   </div>

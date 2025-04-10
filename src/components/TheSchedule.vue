@@ -1,9 +1,12 @@
 <script setup>
-import { ref, computed } from "vue";
-import mock from "../data/mock.json";
+import { computed } from "vue";
 import CourseCard from "./CourseCard.vue";
 
 const props = defineProps({
+  schedule: {
+    type: Array,
+    default: [],
+  },
   DateSelected: {
     type: String,
   },
@@ -13,13 +16,12 @@ const props = defineProps({
   },
 });
 
-const schedule = ref(mock);
 
 // Propriété calculée qui retourne soit les cours du jour, soit un message par défaut
 const scheduleOfTheDay = computed(() => {
   const selectedDate =
     props.DateSelected || new Date().toISOString().split("T")[0]; // Si aucune date n'est sélectionnée, utiliser la date actuelle
-  const filteredSchedule = schedule.value.filter((entry) => {
+  const filteredSchedule = props.schedule.filter((entry) => {
     const entryDate = new Date(entry.end).toISOString().split("T")[0];
     return entryDate === selectedDate;
   });

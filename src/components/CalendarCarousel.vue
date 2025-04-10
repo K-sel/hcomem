@@ -1,11 +1,12 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
-import mock from "../data/mock.json";
 import DateCard from "./DateCard.vue";
 
-const schedule = ref(mock);
-
 const props = defineProps({
+  schedule: {
+    type: Array,
+    default: [],
+  },
   showHistory: {
     type: Boolean,
     default: false,
@@ -30,8 +31,8 @@ const uniqueSortedDates = computed(() => {
 
   // Filtrer les rendez-vous selon showHistory
   const filteredSchedule = props.showHistory
-    ? schedule.value // Si showHistory est true, on montre toutes les dates
-    : schedule.value.filter((entry) => new Date(entry.start) >= today); // Sinon, uniquement celles futures ou d'aujourd'hui
+    ? props.schedule // Si showHistory est true, on montre toutes les dates
+    : props.schedule.filter((entry) => new Date(entry.start) >= today); // Sinon, uniquement celles futures ou d'aujourd'hui
 
   // Map pour extraire les dates et les convertir en format YYYY-MM-DD
   const allDates = filteredSchedule.map((entry) => {
@@ -78,9 +79,9 @@ const currentMonthTitle = ref("");
 // Fonction pour formater le titre du mois (ex: "Avril, 2024")
 const formatMonthTitle = (dateString) => {
   const date = new Date(dateString);
-  const options = { month: 'long', year: 'numeric' };
+  const options = { month: "long", year: "numeric" };
   // Formater en français avec première lettre en majuscule
-  const formatted = date.toLocaleDateString('fr-FR', options);
+  const formatted = date.toLocaleDateString("fr-FR", options);
   return formatted.charAt(0).toUpperCase() + formatted.slice(1);
 };
 
@@ -100,33 +101,37 @@ const updateVisibleMonth = () => {
   const dateItems = carousel.querySelectorAll(".date-item");
   const datesDiv = document.getElementById("dates");
   const datesRect = datesDiv.getBoundingClientRect();
-  
+
   // Déterminer le point de référence (approximativement 1/3 de la largeur visible)
   // Pour mieux détecter les changements de mois dans les deux directions
   const referencePoint = datesRect.left + datesRect.width / 3;
-  
+
   let visibleMonthDate = null;
   let closestDistance = Infinity;
-  
+
   // Trouver l'élément de date le plus proche du point de référence
   for (let i = 0; i < dateItems.length; i++) {
     const itemRect = dateItems[i].getBoundingClientRect();
-    
+
     // Calculer la distance entre le centre de l'élément et le point de référence
     const itemCenter = itemRect.left + itemRect.width / 2;
     const distance = Math.abs(itemCenter - referencePoint);
-    
+
     // Si cet élément est plus proche que le précédent trouvé
-    if (distance < closestDistance && itemRect.right > datesRect.left && itemRect.left < datesRect.right) {
+    if (
+      distance < closestDistance &&
+      itemRect.right > datesRect.left &&
+      itemRect.left < datesRect.right
+    ) {
       closestDistance = distance;
       visibleMonthDate = uniqueSortedDates.value[i];
     }
   }
-  
+
   // Mettre à jour le titre du mois si on a trouvé une date visible
   if (visibleMonthDate) {
     const newMonthTitle = formatMonthTitle(visibleMonthDate);
-    
+
     // Ne mettre à jour que si le titre change, pour éviter les re-rendus inutiles
     if (newMonthTitle !== currentMonthTitle.value) {
       currentMonthTitle.value = newMonthTitle;
@@ -163,7 +168,7 @@ const scrollToToday = () => {
 
       // Appliquer le défilement
       carousel.scrollLeft += scrollNeeded;
-      
+
       // Mettre à jour le titre du mois après le défilement
       updateVisibleMonth();
     }
@@ -195,21 +200,21 @@ onMounted(() => {
   if (carousel) {
     // Variable pour limiter la fréquence des mises à jour (debounce)
     let scrollTimeout;
-    
-    carousel.addEventListener('scroll', () => {
+
+    carousel.addEventListener("scroll", () => {
       // Annuler le timeout précédent
       if (scrollTimeout) {
         cancelAnimationFrame(scrollTimeout);
       }
-      
+
       // Programmer une nouvelle mise à jour
       scrollTimeout = requestAnimationFrame(() => {
         updateVisibleMonth();
       });
     });
-    
+
     // S'assurer que le titre est correct après chaque transition de scroll
-    carousel.addEventListener('scrollend', () => {
+    carousel.addEventListener("scrollend", () => {
       updateVisibleMonth();
     });
   }

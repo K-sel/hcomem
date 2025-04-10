@@ -1,31 +1,50 @@
 <!-- BadgeCarousel.vue -->
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
-// Liste des classes disponibles
-const classes = ref([
-  { id: "all", label: "Tous", isActive: true },
-  { id: "IM51-1", label: "IM51-1", isActive: false },
-  { id: "IM51-2", label: "IM51-2", isActive: false },
-  { id: "IM52-1", label: "IM52-1", isActive: false },
-  { id: "IM52-2", label: "IM52-2", isActive: false },
-  { id: "IM53-1", label: "IM53-1", isActive: false },
-  { id: "IM53-2", label: "IM53-2", isActive: false },
-  { id: "IM53-3", label: "IM53-3", isActive: false },
-]);
+// Récupérer le schedule via props
+const props = defineProps({
+  schedule: {
+    type: Array,
+    default: () => []
+  }
+});
 
 // État pour la classe sélectionnée
-const selectedClass = ref("tous");
+const selectedClassId = ref("all");
+
+// Extraire les classes uniques à partir du schedule
+const classes = computed(() => {
+  // Valeur par défaut avec "Tous"
+  const defaultClasses = [{ id: "all", label: "Tous" }];
+  
+  if (!props.schedule || props.schedule.length === 0) {
+    return defaultClasses;
+  }
+
+  // Extraire les classes uniques
+  const uniqueClassesSet = new Set();
+  props.schedule.forEach(event => {
+    if (event.class) {
+      uniqueClassesSet.add(event.class);
+    }
+  });
+
+  // Convertir en tableau d'objets
+  const classesArray = Array.from(uniqueClassesSet).map(className => ({
+    id: className,
+    label: className
+  }));
+
+  // Ajouter "Tous" en première position
+  return [{ id: "all", label: "Tous" }, ...classesArray];
+});
 
 // Fonction pour gérer la sélection d'un badge
 const selectBadge = (id) => {
-  selectedClass.value = id;
-  classes.value = classes.value.map((badge) => ({
-    ...badge,
-    isActive: badge.id === id,
-  }));
-
-  // Ici vous pouvez émettre un événement pour le filtrage
+  selectedClassId.value = id;
+  
+  // Émettre l'événement
   emit("classSelected", id);
 };
 
@@ -40,7 +59,7 @@ const emit = defineEmits(["classSelected"]);
       <div
         v-for="badge in classes"
         :key="badge.id"
-        :class="['badge', { active: badge.isActive }]"
+        :class="['badge', { active: selectedClassId === badge.id }]"
         @click="selectBadge(badge.id)"
       >
         {{ badge.label }}
