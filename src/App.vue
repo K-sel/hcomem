@@ -91,7 +91,9 @@ body {
 main {
   width: 100%;
   max-width: 800px;
-  padding: 32px;
+  padding-top: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
   padding-bottom: 64px;
   display: flex;
   flex-direction: column;
