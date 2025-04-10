@@ -34,7 +34,7 @@ p.hello {
 span.highlight {
   color: #2163f6;
   font-family: Questrial;
-  font-size: 32px;
+  font-size: 28px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
@@ -43,7 +43,7 @@ span.highlight {
 span.normalPhrase {
   color: #000;
   font-family: Questrial;
-  font-size: 32px;
+  font-size: 28px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;

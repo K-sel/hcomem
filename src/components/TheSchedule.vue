@@ -17,16 +17,18 @@ const schedule = ref(mock);
 
 // Propriété calculée qui retourne soit les cours du jour, soit un message par défaut
 const scheduleOfTheDay = computed(() => {
-  const selectedDate = props.DateSelected || new Date().toISOString().split("T")[0]; // Si aucune date n'est sélectionnée, utiliser la date actuelle
+  const selectedDate =
+    props.DateSelected || new Date().toISOString().split("T")[0]; // Si aucune date n'est sélectionnée, utiliser la date actuelle
   const filteredSchedule = schedule.value.filter((entry) => {
     const entryDate = new Date(entry.end).toISOString().split("T")[0];
     return entryDate === selectedDate;
   });
 
   if (props.ClassSelected !== "all") {
-    console.log('Filtrage par classe:', props.ClassSelected);
     // Si une classe spécifique est sélectionnée, filtrer par classe
-    return filteredSchedule.filter((entry) => entry.class === props.ClassSelected);
+    return filteredSchedule
+      .filter((entry) => entry.class === props.ClassSelected)
+      .sort((a, b) => new Date(a.start) - new Date(b.start));
   }
 
   // Si aucun cours n'est prévu, retourner un tableau avec un message par défaut
@@ -44,10 +46,8 @@ const scheduleOfTheDay = computed(() => {
   }
 
   // Sinon, retourner les cours filtrés
-  return filteredSchedule;
+  return filteredSchedule.sort((a, b) => new Date(a.start) - new Date(b.start));
 });
-
-console.log(scheduleOfTheDay.value);
 </script>
 
 <template>

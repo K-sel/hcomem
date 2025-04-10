@@ -16,7 +16,7 @@ div.container {
 h1 {
   color: #000;
   font-family: Questrial;
-  font-size: 42px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

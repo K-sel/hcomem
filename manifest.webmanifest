@@ -4,7 +4,7 @@
   "description": "Application mobile pour les horaires d'Ingénierie des Médias HEIG-VD",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#2163f6",
+  "background_color": "#c2dbfd",
   "theme_color": "#2163f6",
   "orientation": "portrait-primary",
   "icons": [

@@ -91,7 +91,8 @@ body {
 main {
   width: 100%;
   max-width: 800px;
-  padding: 16px;
+  padding: 32px;
+  padding-bottom: 64px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* Changé de flex-end à flex-start */
@@ -114,15 +115,5 @@ header {
   max-width: 800px;
   box-sizing: border-box;
   padding: 0 32px;
-}
-
-@media (min-width: 840px) {
-  main {
-    padding: 32px;
-  }
-
-  header {
-    padding: 0 32px;
-  }
 }
 </style>

@@ -7,11 +7,11 @@ const classes = ref([
   { id: "all", label: "Tous", isActive: true },
   { id: "IM51-1", label: "IM51-1", isActive: false },
   { id: "IM51-2", label: "IM51-2", isActive: false },
-  { id: "IM52-1", label: "IM52-1", isActive: false }, 
-  { id: "IM52-2", label: "IM52-2", isActive: false }, 
-  { id: "IM53-1", label: "IM53-1", isActive: false }, 
-  { id: "IM53-2", label: "IM53-2", isActive: false }, 
-  { id: "IM53-3", label: "IM53-3", isActive: false }, 
+  { id: "IM52-1", label: "IM52-1", isActive: false },
+  { id: "IM52-2", label: "IM52-2", isActive: false },
+  { id: "IM53-1", label: "IM53-1", isActive: false },
+  { id: "IM53-2", label: "IM53-2", isActive: false },
+  { id: "IM53-3", label: "IM53-3", isActive: false },
 ]);
 
 // État pour la classe sélectionnée
@@ -55,7 +55,7 @@ const emit = defineEmits(["classSelected"]);
   max-width: 100%;
   overflow: hidden;
   font-family: Questrial;
-  font-size: 16px;
+  font-size: 18px;
   box-sizing: border-box;
   padding: 16px;
 }
