@@ -17,6 +17,13 @@ export default defineConfig({
     port: 3000,
     open: true,
     cors: true,
+    proxy: {
+      '/api/schedule/': {
+        target: 'https://chabloz.eu/files/horaires/',
+        changeOrigin: true,
+        rewrite: path => path.replace('/api/schedule/', '')
+      }
+    }
   },
   build: {
     outDir: 'dist',

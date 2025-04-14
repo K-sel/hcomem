@@ -25,26 +25,29 @@ const handleDateChange = (date) => {
 
 // Extraire toutes les dates uniques (en format YYYY-MM-DD) et les trier
 const uniqueSortedDates = computed(() => {
-  // Filtrer les dates selon le paramètre showHistory
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Normaliser à minuit pour comparer les dates correctement
+  if (props.schedule != null) {
+    // Filtrer les dates selon le paramètre showHistory
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normaliser à minuit pour comparer les dates correctement
 
-  // Filtrer les rendez-vous selon showHistory
-  const filteredSchedule = props.showHistory
-    ? props.schedule // Si showHistory est true, on montre toutes les dates
-    : props.schedule.filter((entry) => new Date(entry.start) >= today); // Sinon, uniquement celles futures ou d'aujourd'hui
+    // Filtrer les rendez-vous selon showHistory
+    const filteredSchedule = props.showHistory
+      ? props.schedule // Si showHistory est true, on montre toutes les dates
+      : props.schedule.filter((entry) => new Date(entry.start) >= today); // Sinon, uniquement celles futures ou d'aujourd'hui
 
-  // Map pour extraire les dates et les convertir en format YYYY-MM-DD
-  const allDates = filteredSchedule.map((entry) => {
-    const date = new Date(entry.start);
-    return date.toISOString().split("T")[0]; // Format YYYY-MM-DD
-  });
+    // Map pour extraire les dates et les convertir en format YYYY-MM-DD
+    const allDates = filteredSchedule.map((entry) => {
+      const date = new Date(entry.start);
+      return date.toISOString().split("T")[0]; // Format YYYY-MM-DD
+    });
 
-  // Utiliser un Set pour éliminer les doublons
-  const uniqueDates = [...new Set(allDates)];
+    // Utiliser un Set pour éliminer les doublons
+    const uniqueDates = [...new Set(allDates)];
 
-  // Trier les dates par ordre chronologique
-  return uniqueDates.sort();
+    // Trier les dates par ordre chronologique
+    return uniqueDates.sort();
+  }
+  return [];
 });
 
 // Surveiller les changements de showHistory et rappeler scrollToToday
@@ -222,7 +225,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="dates">
+  <div id="dates" v-if="schedule != null">
     <h4>{{ currentMonthTitle }}</h4>
     <div id="carousel" ref="carouselRef">
       <DateCard

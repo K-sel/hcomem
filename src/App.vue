@@ -1,33 +1,28 @@
 <script setup>
-import TheSchedule from "./components/TheSchedule.vue";
 import TheWelcome from "./components/TheWelcome.vue";
 import Options from "./components/Options.vue";
 import CalendarCarousel from "./components/CalendarCarousel.vue";
-import TheTitle from "./components/TheTitle.vue";
 import BadgeCarousel from "./components/BadgeCarousel.vue";
-import { ref, onMounted, computed } from "vue";
-import { useJsonStorage } from "./composables/useJsonStorage";
-import { loadSchedule } from "./data/api.js";
+import { ref } from "vue";
+import { useFetchJson } from "./composables/useFetchJson.js";
+// Import direct des deux composants d'affichage
+import DayScheduleView from "./components/DayScheduleView.vue";
 
+// Référence pour suivre l'onglet actif
+const activeTab = ref(0);
 const showHistory = ref(false);
 const todayClicked = ref(false);
 const DateSelected = ref(null);
 const ClassSelected = ref("all");
+const CourseSelected = ref("all");
 
-// Récupération du schedule depuis le stockage local
-const { data: schedule } = useJsonStorage("schedule", []);
 
-onMounted(async () => {
-  try {
-    // Chargement des données fraîches depuis l'API
-    const freshSchedule = await loadSchedule();
-    // Mise à jour de la référence pour déclencher la sauvegarde (via le watcher dans useJsonStorage)
-    schedule.value = freshSchedule;
-    console.log(schedule.value);
-  } catch (error) {
-    console.error("Erreur lors du chargement des données :", error);
-  }
-});
+const {
+  data: schedule,
+  loading,
+  error,
+} = useFetchJson({ url: "/api/schedule/all" });
+
 
 const handleClickOnAujourdhuiButton = () => {
   todayClicked.value = !todayClicked.value;
@@ -43,35 +38,44 @@ const handleDateChange = (date) => {
 
 const handleClassChange = (className) => {
   ClassSelected.value = className;
+  console.log("Class selected:", className);
 };
+
 </script>
 
 <template>
   <div class="app-container">
     <header>
-      <TheTitle></TheTitle>
       <TheWelcome></TheWelcome>
     </header>
     <main>
-      <Options
-        @buttonClicked="handleClickOnAujourdhuiButton"
-        @toggleClicked="handleToggleClick"
-      ></Options>
-      <CalendarCarousel
-        @dateSelected="handleDateChange"
-        :showHistory="showHistory"
-        :todayClicked="todayClicked"
-        :schedule="schedule"
-      ></CalendarCarousel>
-      <BadgeCarousel
-        @classSelected="handleClassChange"
-        :schedule="schedule"
-      ></BadgeCarousel>
-      <TheSchedule
-        :DateSelected="DateSelected"
-        :ClassSelected="ClassSelected"
-        :schedule="schedule"
-      />
+
+      <!-- Première section : Calendrier -->
+      <div v-if="activeTab === 0" class="section-container">
+        <Options
+          @buttonClicked="handleClickOnAujourdhuiButton"
+          @toggleClicked="handleToggleClick"
+        ></Options>
+        <CalendarCarousel
+          @dateSelected="handleDateChange"
+          :showHistory="showHistory"
+          :todayClicked="todayClicked"
+          :schedule="schedule"
+        ></CalendarCarousel>
+        <BadgeCarousel
+          @classSelected="handleClassChange"
+          :schedule="schedule"
+        ></BadgeCarousel>
+
+        <!-- Vue par jour -->
+        <DayScheduleView
+          :DateSelected="DateSelected"
+          :ClassSelected="ClassSelected"
+          :schedule="schedule"
+          :CourseSelected="CourseSelected"
+        />
+      </div>
+
     </main>
   </div>
 </template>
@@ -87,7 +91,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--blue-background);
-  min-height: 100%;
+  height: 100%;
   width: 100%;
 }
 </style>
@@ -101,27 +105,62 @@ body {
   align-items: center;
   background: var(--blue-background, #c2dbfd);
   box-sizing: border-box;
-  overflow: hidden;
   position: relative;
 }
 
 main {
   width: 100%;
   max-width: 800px;
-  padding-top: 32px;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 64px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Changé de flex-end à flex-start */
   align-items: center;
   border-radius: 32px 32px 0px 0px;
   background: var(--bg-default, #fff);
   box-sizing: border-box;
-  flex-grow: 1; /* Ajout de flex-grow pour prendre l'espace disponible */
-  margin-top: auto; /* Pousse le main vers le bas */
-  min-height: 70vh; /* Garantit une hauteur minimale */
+  flex-grow: 1;
+  margin-top: auto;
+  min-height: 70vh;
+}
+
+.tabs-container {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  z-index: 10;
+  padding: 16px;
+  border-radius: 24px 24px 0 0;
+}
+
+.section-container {
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.echeances-content {
+  width: 100%;
+}
+
+.sample-echeances {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.echeance-item {
+  padding: 16px;
+  background-color: #f5f8ff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.echeance-item h3 {
+  margin-top: 0;
+  color: #2163f6;
 }
 
 header {
@@ -129,7 +168,7 @@ header {
   flex-direction: column;
   width: 100%;
   margin-top: 32px;
-  margin-bottom: 32px; /* Modifié pour réduire l'espace avant le main */
+  margin-bottom: 32px;
   gap: 32px;
   max-width: 800px;
   box-sizing: border-box;

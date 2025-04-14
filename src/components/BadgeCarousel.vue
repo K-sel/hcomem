@@ -73,10 +73,11 @@ const emit = defineEmits(["classSelected"]);
   width: 100%;
   max-width: 100%;
   overflow: hidden;
-  font-family: Questrial;
-  font-size: 18px;
+  font-family: Inter;
+  font-size: 14px;
   box-sizing: border-box;
-  padding: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .badge-carousel {
