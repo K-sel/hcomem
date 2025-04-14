@@ -1,6 +1,5 @@
 <script setup>
 import Toggle from "./Toggle.vue";
-import { defineEmits } from "vue";
 
 const emit = defineEmits(["buttonClicked", "toggleClicked"]);
 
