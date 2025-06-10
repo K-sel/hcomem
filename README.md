@@ -7,6 +7,18 @@ Une application web progressive (PWA) pour consulter les horaires des cours d'In
 
 Il s'agit de mon premier projet en Vue.js ! J'ai décidé de créer une application d'horaires pour ma faculté afin d'apprendre le framework Vue.js 3 avec la Composition API. L'objectif était de développer une interface moderne et intuitive pour consulter facilement les horaires de cours.
 
+## 🎓 Apprentissages
+
+Ce projet m'a permis d'apprendre :
+- Les bases de Vue.js 3 et la Composition API
+- La gestion d'état réactif avec `ref` et `computed`
+- La communication entre composants avec props et events
+- L'utilisation de composables pour la logique réutilisable
+- La création d'une PWA
+- La gestion des requêtes API avec fetch
+- Le responsive design et les animations CSS
+
+
 ## ✨ Fonctionnalités
 
 - 📅 **Vue calendrier interactive** - Navigation fluide entre les dates avec carrousel
@@ -22,6 +34,15 @@ Il s'agit de mon premier projet en Vue.js ! J'ai décidé de créer une applicat
 - **Vite** - Outil de build rapide
 - **CSS vanilla** - Styles personnalisés sans framework CSS
 - **PWA** - Fonctionnalités d'application web progressive
+
+## ⚠️ Limitations
+
+**Important :** Cette application ne peut pas être déployée publiquement car :
+- Le backend utilisé n'est pas de ma création
+- L'API des horaires est privée et non accessible publiquement
+- Les données sont spécifiques à l'environnement interne de la HEIG-VD
+
+L'application fonctionne uniquement en développement local avec le proxy configuré dans `vite.config.js`.
 
 ## 🚀 Installation et développement
 
@@ -66,26 +87,3 @@ src/
 └── assets/             # Images et icons
 ```
 
-## ⚠️ Limitations
-
-**Important :** Cette application ne peut pas être déployée publiquement car :
-- Le backend utilisé n'est pas de ma création
-- L'API des horaires est privée et non accessible publiquement
-- Les données sont spécifiques à l'environnement interne de la HEIG-VD
-
-L'application fonctionne uniquement en développement local avec le proxy configuré dans `vite.config.js`.
-
-## 🎓 Apprentissages
-
-Ce projet m'a permis d'apprendre :
-- Les bases de Vue.js 3 et la Composition API
-- La gestion d'état réactif avec `ref` et `computed`
-- La communication entre composants avec props et events
-- L'utilisation de composables pour la logique réutilisable
-- La création d'une PWA
-- La gestion des requêtes API avec fetch
-- Le responsive design et les animations CSS
-
-## 📄 Licence
-
-Ce projet est à des fins éducatives uniquement.
